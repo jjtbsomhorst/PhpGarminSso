@@ -2,15 +2,15 @@
 
 namespace garmin\sso\http;
 
-enum Method
+enum Method: string
 {
-    case PUT;
-    case POST;
-    case PATCH;
-    case OPTIONS;
-    case DELETE;
-    case HEAD;
-    case CONNECT;
-    case TRACE;
-    case GET;
+    case PUT = 'PUT';
+    case POST = 'POST';
+    case PATCH = 'PATCH';
+    case OPTIONS = 'OPTIONS';
+    case DELETE = 'DELETE';
+    case HEAD = 'HEAD';
+    case CONNECT = 'CONNECT';
+    case TRACE = 'TRACE';
+    case GET = 'GET';
 }

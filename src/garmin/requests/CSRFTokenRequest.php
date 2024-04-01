@@ -13,7 +13,7 @@ class CSRFTokenRequest extends Request
     public function __construct()
     {
         parent::__construct(
-            Method::GET->name,
+            Method::GET->value,
             new Uri(
                 GarminConstants::SSO_BASE_URL . '/signin',
                 GarminConstants::CSRF_TOKEN_PARAMS,

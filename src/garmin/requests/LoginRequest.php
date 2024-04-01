@@ -34,7 +34,7 @@ class LoginRequest extends Request
         );
 
         parent::__construct(
-            Method::POST->name,
+            Method::POST->value,
             new Uri(
                 GarminConstants::SSO_BASE_URL . '/signin',
                 array_merge(

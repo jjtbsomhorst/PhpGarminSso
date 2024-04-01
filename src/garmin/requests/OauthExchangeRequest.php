@@ -12,7 +12,7 @@ class OauthExchangeRequest extends Request
     public function __construct()
     {
         parent::__construct(
-            Method::POST->name,
+            Method::POST->value,
             new Uri(GarminConstants::CONNECT_MODERN_URL),
             [
                 "NK" => "NT",

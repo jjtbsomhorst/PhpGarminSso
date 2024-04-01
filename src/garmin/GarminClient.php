@@ -2,7 +2,6 @@
 
 namespace garmin\sso;
 
-use _PHPStan_6b522806f\Nette\Neon\Exception;
 use garmin\sso\requests\AccessTokenRequest;
 use garmin\sso\requests\CSRFTokenRequest;
 use garmin\sso\requests\LoginRequest;
@@ -16,7 +15,6 @@ use garmin\sso\responses\ServiceTicketResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
 use GuzzleHttp\Exception\GuzzleException;
-use http\Env\Response;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class GarminClient
@@ -25,6 +23,7 @@ class GarminClient
     private Client $client;
     private string $username;
     private string $password;
+    private string $cookiedir = "";
     private http\AccessToken $accessToken;
 
     public function __construct()
@@ -43,6 +42,13 @@ class GarminClient
         $this->password = $password;
         return $this;
     }
+
+    public function cookieJarLocation(string $path): self
+    {
+        $this->cookiedir = $path;
+        return $this;
+    }
+
 
     /**
      * @throws ClientExceptionInterface
@@ -91,6 +97,11 @@ class GarminClient
     private function initClient(): void
     {
         $cookieFile = 'cookie_jar.txt';
+
+        if ($this->cookiedir !== "") {
+            $cookieFile = $this->cookiedir . "/" . $cookieFile;
+        }
+
         $cookieJar = new FileCookieJar($cookieFile, true);
         if (!isset($this->client)) {
             $this->client = new Client(['cookies' => $cookieJar,  'verify' => false]);

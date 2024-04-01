@@ -12,14 +12,14 @@ class AccessTokenRequest extends Request
     public function __construct()
     {
         parent::__construct(
-            Method::POST->name,
+            Method::POST->value,
             new Uri(
                 GarminConstants::CONNECT_MODERN_URL . '/di-oauth/exchange',
             ),
             [
                 "NK" => "NT",
                 "X-app-ver" => GarminConstants::APP_VERSION,
-                "Origin" => "https://connect.garmin.com",
+                "Origin" => GarminConstants::CONNECT_BASE_URL,
                 "DNT" => 1,
                 "Sec-GPC" => 1,
                 "Referer" => GarminConstants::CONNECT_MODERN_URL,

@@ -13,7 +13,7 @@ class ServiceTicketRequest extends Request
         string $serviceTicket
     ) {
         parent::__construct(
-            Method::GET->name,
+            Method::GET->value,
             new Uri(
                 GarminConstants::CONNECT_MODERN_URL,
                 [
