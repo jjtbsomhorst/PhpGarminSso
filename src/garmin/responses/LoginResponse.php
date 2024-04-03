@@ -1,6 +1,6 @@
 <?php
 
-namespace garmin\sso\responses;
+namespace jjtbsomhorst\garmin\sso\responses;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;

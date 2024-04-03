@@ -1,17 +1,19 @@
 <?php
 
-namespace garmin\sso;
+namespace jjtbsomhorst\garmin\sso;
 
-use garmin\sso\requests\AccessTokenRequest;
-use garmin\sso\requests\CSRFTokenRequest;
-use garmin\sso\requests\LoginRequest;
-use garmin\sso\requests\RetrieveActivitiesRequest;
-use garmin\sso\requests\ServiceTicketRequest;
-use garmin\sso\requests\SetCookieRequest;
-use garmin\sso\responses\AccessTokenResponse;
-use garmin\sso\responses\CsrfToken;
-use garmin\sso\responses\LoginResponse;
-use garmin\sso\responses\ServiceTicketResponse;
+use jjtbsomhorst\garmin\sso\requests\AccessTokenRequest;
+use jjtbsomhorst\garmin\sso\requests\CSRFTokenRequest;
+use jjtbsomhorst\garmin\sso\requests\DownloadActivityRequest;
+use jjtbsomhorst\garmin\sso\requests\LoginRequest;
+use jjtbsomhorst\garmin\sso\requests\RetrieveActivitiesRequest;
+use jjtbsomhorst\garmin\sso\requests\ServiceTicketRequest;
+use jjtbsomhorst\garmin\sso\requests\SetCookieRequest;
+use jjtbsomhorst\garmin\sso\responses\AccessTokenResponse;
+use jjtbsomhorst\garmin\sso\responses\CsrfToken;
+use jjtbsomhorst\garmin\sso\responses\DownloadActivityResponse;
+use jjtbsomhorst\garmin\sso\responses\LoginResponse;
+use jjtbsomhorst\garmin\sso\responses\ServiceTicketResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
 use GuzzleHttp\Exception\GuzzleException;
@@ -122,11 +124,16 @@ class GarminClient
 
     public function getActivity(string $activityId): ?\stdClass
     {
+//        $response = $this->client->send(new RetrieveActivityRequest($activityId));
+//        return json_decode($response->getBody()->getContents(), false);
         return null;
     }
 
     public function downloadActivity(string $activityId, string $path): bool
     {
-        return false;
+        $response = $this->client->send(new DownloadActivityRequest($this->accessToken->accessToken, $activityId));
+        $downloadResponse = new DownloadActivityResponse($response);
+        $downloadResponse->download($path);
+        return true;
     }
 }

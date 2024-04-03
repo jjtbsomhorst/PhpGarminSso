@@ -1,6 +1,6 @@
 <?php
 
-namespace garmin\sso\http;
+namespace jjtbsomhorst\garmin\sso\http;
 
 class Uri extends \GuzzleHttp\Psr7\Uri
 {

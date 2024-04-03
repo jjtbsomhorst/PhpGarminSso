@@ -1,10 +1,10 @@
 <?php
 
-namespace garmin\sso\requests;
+namespace jjtbsomhorst\garmin\sso\requests;
 
-use garmin\sso\http\GarminConstants;
-use garmin\sso\http\Method;
-use garmin\sso\http\Uri;
+use jjtbsomhorst\garmin\sso\http\GarminConstants;
+use jjtbsomhorst\garmin\sso\http\Method;
+use jjtbsomhorst\garmin\sso\http\Uri;
 use GuzzleHttp\Psr7\Request;
 
 class ServiceTicketRequest extends Request

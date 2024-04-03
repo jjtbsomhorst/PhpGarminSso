@@ -1,9 +1,8 @@
 <?php
 
-namespace garmin\sso\responses;
+namespace jjtbsomhorst\garmin\sso\responses;
 
 use Exception;
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
 readonly class CsrfToken

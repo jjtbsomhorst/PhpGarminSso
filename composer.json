@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "garmin\\sso\\": "src/garmin"
+            "jjtbsomhorst\\garmin\\sso\\": "src/garmin"
         }
     },
     "authors": [
