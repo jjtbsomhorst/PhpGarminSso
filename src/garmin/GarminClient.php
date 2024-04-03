@@ -18,6 +18,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class GarminClient
 {
@@ -53,7 +55,7 @@ class GarminClient
 
 
     /**
-     * @throws ClientExceptionInterface
+     * @throws GuzzleException
      */
     public function login(): self
     {
@@ -81,7 +83,7 @@ class GarminClient
         $serviceTicket = $response->getServiceTicket();
 
         $response = new ServiceTicketResponse(
-            $this->client->send(
+            $this->send(
                 new ServiceTicketRequest("")
             )
         );
@@ -114,21 +116,37 @@ class GarminClient
      * @throws GuzzleException
      * @return \stdClass[]
      */
-    public function getActivities(): array
+    public function getActivities(int $start = 20, int $limit = 20, string $sortBy = 'startLocal', string $sortOrder = 'asc'): array
     {
-        $request = new RetrieveActivitiesRequest($this->accessToken->accessToken);
-        $response = $this->client->send($request);
+        $request = new RetrieveActivitiesRequest($this->accessToken->accessToken, $start, $limit, $sortBy, $sortOrder);
+        $response = $this->send($request);
 
         return json_decode($response->getBody()->getContents(), false);
     }
 
-    public function getActivity(string $activityId): ?\stdClass
+    /**
+     * @throws GuzzleException
+     * @see Client::send()
+     */
+    private function send (RequestInterface $request, array $options = [], bool $retryOnFail = true): ResponseInterface
     {
-//        $response = $this->client->send(new RetrieveActivityRequest($activityId));
-//        return json_decode($response->getBody()->getContents(), false);
-        return null;
+        try {
+            return $this->client->send($request, $options);
+        } catch (GuzzleException $exception) {
+            if ($retryOnFail) {
+                if ($exception->getCode() === 401) {
+                    $this->login();
+                }
+
+                return $this->send($request, $options, false);
+            }
+            throw $exception;
+        }
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function downloadActivity(string $activityId, string $path): bool
     {
         $response = $this->client->send(new DownloadActivityRequest($this->accessToken->accessToken, $activityId));
