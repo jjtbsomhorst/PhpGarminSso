@@ -48,6 +48,6 @@ class DownloadActivityResponse extends Response
         }
 
         $headerValue = str_replace(['"', 'filename=', 'attachment;'], ['','',''], $header[0]);
-        return $headerValue;
+        return trim($headerValue);
     }
 }
