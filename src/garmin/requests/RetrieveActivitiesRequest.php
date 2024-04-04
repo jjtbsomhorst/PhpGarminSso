@@ -17,7 +17,9 @@ class RetrieveActivitiesRequest extends Request
                 GarminConstants::CONNECT_BASE_URL . '/activitylist-service/activities/search/activities',
                 [
                     'limit' => $limit,
-                    'start' => $start
+                    'start' => $start,
+                    'sortBy' => $sortby,
+                    'sortOrder' => $sortOrder
                 ]
             ),
             [
