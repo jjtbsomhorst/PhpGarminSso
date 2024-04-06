@@ -2,6 +2,7 @@
 
 namespace jjtbsomhorst\garmin\sso;
 
+use Exception;
 use jjtbsomhorst\garmin\sso\requests\AccessTokenRequest;
 use jjtbsomhorst\garmin\sso\requests\CSRFTokenRequest;
 use jjtbsomhorst\garmin\sso\requests\DownloadActivityRequest;
@@ -17,13 +18,14 @@ use jjtbsomhorst\garmin\sso\responses\ServiceTicketResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
 use GuzzleHttp\Exception\GuzzleException;
+use jjtbsomhorst\garmin\sso\support\ActivityDownload;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 class GarminClient
 {
-
     private Client $client;
     private string $username;
     private string $password;
@@ -53,9 +55,10 @@ class GarminClient
         return $this;
     }
 
-
     /**
+     * @throws ClientExceptionInterface
      * @throws GuzzleException
+     * @throws Exception
      */
     public function login(): self
     {
@@ -63,7 +66,7 @@ class GarminClient
         $response = $this->client->send(new SetCookieRequest());
 
         if ($response->getStatusCode() !== 200) {
-            throw new \Exception($response->getReasonPhrase());
+            throw new Exception($response->getReasonPhrase());
         }
 
         $response = $this->client->send(new CSRFTokenRequest());
@@ -126,9 +129,10 @@ class GarminClient
 
     /**
      * @throws GuzzleException
+     * @throws ClientExceptionInterface
      * @see Client::send()
      */
-    private function send (RequestInterface $request, array $options = [], bool $retryOnFail = true): ResponseInterface
+    private function send(RequestInterface $request, array $options = [], bool $retryOnFail = true): ResponseInterface
     {
         try {
             return $this->client->send($request, $options);
@@ -146,6 +150,7 @@ class GarminClient
 
     /**
      * @throws GuzzleException
+     * @throws Exception
      */
     public function downloadActivity(string $activityId, string $path): bool
     {
@@ -153,5 +158,15 @@ class GarminClient
         $downloadResponse = new DownloadActivityResponse($response);
         $downloadResponse->download($path);
         return true;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function downloadActivityAsStreamObject(string $activityId): ActivityDownload
+    {
+        $response = $this->client->send(new DownloadActivityRequest($this->accessToken->accessToken, $activityId));
+        $downloadResponse = new DownloadActivityResponse($response);
+        return new ActivityDownload($downloadResponse->getFileName(), $downloadResponse->getBody());
     }
 }

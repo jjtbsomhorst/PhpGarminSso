@@ -19,7 +19,18 @@ class DownloadActivityResponse extends Response
         );
     }
 
-    public function download(string $path)
+    /**
+     * @throws Exception
+     */
+    public function getFileName(): string
+    {
+        return $this->getFileNameFromHeader();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function download(string $path): void
     {
         if (!is_dir($path)) {
             throw new \InvalidArgumentException('Given path must be a directory');
