@@ -8,6 +8,8 @@ use jjtbsomhorst\garmin\sso\requests\CSRFTokenRequest;
 use jjtbsomhorst\garmin\sso\requests\DownloadActivityRequest;
 use jjtbsomhorst\garmin\sso\requests\LoginRequest;
 use jjtbsomhorst\garmin\sso\requests\RetrieveActivitiesRequest;
+use jjtbsomhorst\garmin\sso\requests\RetrieveCourseRequest;
+use jjtbsomhorst\garmin\sso\requests\RetrieveCoursesRequest;
 use jjtbsomhorst\garmin\sso\requests\ServiceTicketRequest;
 use jjtbsomhorst\garmin\sso\requests\SetCookieRequest;
 use jjtbsomhorst\garmin\sso\responses\AccessTokenResponse;
@@ -23,6 +25,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use stdClass;
 
 class GarminClient
 {
@@ -117,7 +120,26 @@ class GarminClient
 
     /**
      * @throws GuzzleException
-     * @return \stdClass[]
+     * @throws ClientExceptionInterface
+     */
+    public function getCourses(): ?array
+    {
+        $request = new RetrieveCoursesRequest($this->accessToken->accessToken);
+        $response = $this->send($request);
+        $data = json_decode($response->getBody()->getContents(), false);
+        return $data->coursesForUser ?? null;
+    }
+
+    public function getCourse(string $courseId): stdClass
+    {
+        $request = new RetrieveCourseRequest($this->accessToken->accessToken, $courseId);
+        $response = $this->send($request);
+        return json_decode($response->getBody()->getContents(), false);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @return stdClass[]
      */
     public function getActivities(int $start = 20, int $limit = 20, string $sortBy = 'startLocal', string $sortOrder = 'asc'): array
     {

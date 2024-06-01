@@ -4,6 +4,7 @@ namespace jjtbsomhorst\garmin\sso\responses;
 
 use Exception;
 use GuzzleHttp\Psr7\Response;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
 class DownloadActivityResponse extends Response
@@ -33,7 +34,7 @@ class DownloadActivityResponse extends Response
     public function download(string $path): void
     {
         if (!is_dir($path)) {
-            throw new \InvalidArgumentException('Given path must be a directory');
+            throw new InvalidArgumentException('Given path must be a directory');
         }
 
         $fileName = $this->getFileNameFromHeader();
