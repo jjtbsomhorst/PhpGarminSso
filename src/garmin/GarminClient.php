@@ -25,7 +25,6 @@ use jjtbsomhorst\garmin\sso\support\ActivityDownload;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use stdClass;
 
 class GarminClient
@@ -137,7 +136,6 @@ class GarminClient
         $response = $this->send($request);
         return json_decode($response->getBody()->getContents(), false);
     }
-
 
     public function getCourseGpx(string $courseId): string
     {
