@@ -10,6 +10,7 @@ use jjtbsomhorst\garmin\sso\requests\LoginRequest;
 use jjtbsomhorst\garmin\sso\requests\RetrieveActivitiesRequest;
 use jjtbsomhorst\garmin\sso\requests\RetrieveCourseRequest;
 use jjtbsomhorst\garmin\sso\requests\RetrieveCoursesRequest;
+ use jjtbsomhorst\garmin\sso\requests\RetrieveGpxRequest;
 use jjtbsomhorst\garmin\sso\requests\ServiceTicketRequest;
 use jjtbsomhorst\garmin\sso\requests\SetCookieRequest;
 use jjtbsomhorst\garmin\sso\responses\AccessTokenResponse;
@@ -135,6 +136,13 @@ class GarminClient
         $request = new RetrieveCourseRequest($this->accessToken->accessToken, $courseId);
         $response = $this->send($request);
         return json_decode($response->getBody()->getContents(), false);
+    }
+
+    public function getCourseGpx(string $courseId): string
+    {
+        $request = new RetrieveGpxRequest($this->accessToken->accessToken, $courseId);
+        $response = $this->send($request);
+        return $response->getBody()->getContents();
     }
 
     /**
