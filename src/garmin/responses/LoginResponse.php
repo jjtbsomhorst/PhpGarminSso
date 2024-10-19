@@ -32,7 +32,6 @@ class LoginResponse extends Response
             return $matches[1];
         }
 
-        throw new Exception("Invalid response. No ticket detected");
+        throw new Exception('Invalid response. No ticket detected');
     }
-
 }

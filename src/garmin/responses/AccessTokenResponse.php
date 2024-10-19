@@ -2,8 +2,8 @@
 
 namespace jjtbsomhorst\garmin\sso\responses;
 
-use jjtbsomhorst\garmin\sso\http\AccessToken;
 use GuzzleHttp\Psr7\Response;
+use jjtbsomhorst\garmin\sso\http\AccessToken;
 use Psr\Http\Message\ResponseInterface;
 
 class AccessTokenResponse extends Response

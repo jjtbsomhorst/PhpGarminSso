@@ -7,6 +7,7 @@ use Carbon\Carbon;
 class AccessToken
 {
     private Carbon $expiresAt;
+
     private Carbon $refresExpiresat;
 
     private function __construct(
@@ -24,7 +25,7 @@ class AccessToken
 
     public static function fromJson(array $json): AccessToken
     {
-        return new self($json["scope"], $json["jti"], $json["access_token"], $json["token_type"], $json["refresh_token"], $json["expires_in"], $json["refresh_token_expires_in"]);
+        return new self($json['scope'], $json['jti'], $json['access_token'], $json['token_type'], $json['refresh_token'], $json['expires_in'], $json['refresh_token_expires_in']);
     }
 
     public function isExpired(): bool
@@ -34,6 +35,6 @@ class AccessToken
 
     public function canRefresh(): bool
     {
-        return !Carbon::now()->isAfter($this->refresExpiresat);
+        return ! Carbon::now()->isAfter($this->refresExpiresat);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace jjtbsomhorst\garmin\sso\requests;
 
+use GuzzleHttp\Psr7\Request;
 use jjtbsomhorst\garmin\sso\http\GarminConstants;
 use jjtbsomhorst\garmin\sso\http\Method;
 use jjtbsomhorst\garmin\sso\http\Uri;
-use GuzzleHttp\Psr7\Request;
 
 class LoginRequest extends Request
 {
@@ -21,7 +21,7 @@ class LoginRequest extends Request
                 'username' => $this->username,
                 'password' => $this->password,
                 '_csrf' => $this->csrfToken,
-                'embed' => 'true'
+                'embed' => 'true',
             ]
         );
 
@@ -29,14 +29,14 @@ class LoginRequest extends Request
         unset($params['locale']);
 
         $uri = new Uri(
-            GarminConstants::SSO_BASE_URL . '/signin',
+            GarminConstants::SSO_BASE_URL.'/signin',
             $params
         );
 
         parent::__construct(
             Method::POST->value,
             new Uri(
-                GarminConstants::SSO_BASE_URL . '/signin',
+                GarminConstants::SSO_BASE_URL.'/signin',
                 array_merge(
                     GarminConstants::CSRF_TOKEN_PARAMS,
                     [
@@ -44,12 +44,12 @@ class LoginRequest extends Request
                         'username' => $this->username,
                         'password' => $this->password,
                         '_csrf' => $this->csrfToken,
-                        'embed' => true
+                        'embed' => true,
                     ]
                 )
             ),
             [
-                'Referer' => CSRFTokenRequest::url()->__toString()
+                'Referer' => CSRFTokenRequest::url()->__toString(),
             ]
         );
     }

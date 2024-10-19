@@ -7,30 +7,22 @@ use jjtbsomhorst\garmin\sso\http\GarminConstants;
 use jjtbsomhorst\garmin\sso\http\Method;
 use jjtbsomhorst\garmin\sso\http\Uri;
 
-class RetrieveActivitiesRequest extends Request
+class DownloadActivityTcxRequest extends Request
 {
-    public function __construct($token, int $start = 0, int $limit = 20, string $sortby = 'startLocal', string $sortOrder = 'asc')
+    public function __construct(string $token, string $activityId)
     {
         parent::__construct(
             Method::GET->value,
-            new Uri(
-                GarminConstants::CONNECT_BASE_URL.'/activitylist-service/activities/search/activities',
-                [
-                    'limit' => $limit,
-                    'start' => $start,
-                    'sortBy' => $sortby,
-                    'sortOrder' => $sortOrder,
-                ]
-            ),
+            new Uri(GarminConstants::CONNECT_BASE_URL.'/download-service/export/tcx/activity/'.$activityId),
             [
                 'NK' => 'NT',
-                'X-app-ver' => GarminConstants::APP_VERSION,
+                'X-app-ver' => '4.76.0.17',
                 'X-lang' => 'nl-NL',
                 'DI-Backend' => 'connectapi.garmin.com',
                 'DNT' => '1',
                 'Sec-GPC' => '1',
                 'Connection' => 'keep-alive',
-                'Referer' => 'https://connect.garmin.com/modern/activities',
+                'Referer' => GarminConstants::CONNECT_MODERN_URL.'/activity/'.$activityId,
                 'Pragma' => 'no-cache',
                 'Cache-Control' => 'no-cache',
                 'TE' => 'trailers',

@@ -17,8 +17,8 @@ readonly class CsrfToken
         $csrf_token_regex = '/name="_csrf" value="([^"]+)"/';
         preg_match($csrf_token_regex, $body, $matches);
 
-        if (!isset($matches[1])) {
-            throw new Exception("Invalid response");
+        if (! isset($matches[1])) {
+            throw new Exception('Invalid response');
         }
 
         return $matches[1];

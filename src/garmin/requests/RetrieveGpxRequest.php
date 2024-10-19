@@ -13,17 +13,17 @@ class RetrieveGpxRequest extends Request
     {
         parent::__construct(
             Method::GET->value,
-            new Uri(GarminConstants::CONNECT_BASE_URL . '/modern/proxy/course-service/course/gpx/' . $courseId),
+            new Uri(GarminConstants::CONNECT_BASE_URL.'/modern/proxy/course-service/course/gpx/'.$courseId),
             [
-                "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                "Referer" => GarminConstants::CONNECT_BASE_URL . '/modern/proxy/course-service/course/gpx/' . $courseId,
-                "Upgrade-Insecure-Requests" => 1,
-                "Sec-Fetch-Dest" => "document",
-                "Sec-Fetch-Mode" => "navigate",
-                "Sec-Fetch-Site" => "same-origin",
-                "Sec-Fetch-User" => "?1",
-                "Priority" => "u=1",
-                "TE" => "trailers"
+                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                'Referer' => GarminConstants::CONNECT_BASE_URL.'/modern/proxy/course-service/course/gpx/'.$courseId,
+                'Upgrade-Insecure-Requests' => 1,
+                'Sec-Fetch-Dest' => 'document',
+                'Sec-Fetch-Mode' => 'navigate',
+                'Sec-Fetch-Site' => 'same-origin',
+                'Sec-Fetch-User' => '?1',
+                'Priority' => 'u=1',
+                'TE' => 'trailers',
             ]
         );
     }

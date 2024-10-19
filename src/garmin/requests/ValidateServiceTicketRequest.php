@@ -2,10 +2,10 @@
 
 namespace jjtbsomhorst\garmin\sso\requests;
 
+use GuzzleHttp\Psr7\Request;
 use jjtbsomhorst\garmin\sso\http\GarminConstants;
 use jjtbsomhorst\garmin\sso\http\Method;
 use jjtbsomhorst\garmin\sso\http\Uri;
-use GuzzleHttp\Psr7\Request;
 
 class ValidateServiceTicketRequest extends Request
 {
@@ -16,15 +16,14 @@ class ValidateServiceTicketRequest extends Request
             new Uri(
                 GarminConstants::CONNECT_MODERN_URL,
                 [
-                    'ticket' => $serviceTicket
+                    'ticket' => $serviceTicket,
                 ],
             ),
             [
                 'DNT' => 1,
                 'Referer' => GarminConstants::SSO_EMBED_URL,
-                'TE' => 'Trailers'
+                'TE' => 'Trailers',
             ]
         );
     }
-
 }
