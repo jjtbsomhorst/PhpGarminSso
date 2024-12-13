@@ -33,14 +33,14 @@ class DownloadActivityResponse extends Response
      */
     public function download(string $path): void
     {
-        if (!is_dir($path)) {
+        if (! is_dir($path)) {
             throw new InvalidArgumentException('Given path must be a directory');
         }
 
         $fileName = $this->getFileNameFromHeader();
 
-        $resource =  fopen($path . '/' . $fileName, 'w');
-        while (!$this->getBody()->eof()) {
+        $resource = fopen($path.'/'.$fileName, 'w');
+        while (! $this->getBody()->eof()) {
             fwrite($resource, $this->getBody()->read(1024));
         }
 
@@ -59,7 +59,8 @@ class DownloadActivityResponse extends Response
             throw new Exception('Unable to determine filename from response');
         }
 
-        $headerValue = str_replace(['"', 'filename=', 'attachment;'], ['','',''], $header[0]);
+        $headerValue = str_replace(['"', 'filename=', 'attachment;'], ['', '', ''], $header[0]);
+
         return trim($headerValue);
     }
 }

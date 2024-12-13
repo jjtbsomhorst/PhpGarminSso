@@ -2,10 +2,10 @@
 
 namespace jjtbsomhorst\garmin\sso\requests;
 
+use GuzzleHttp\Psr7\Request;
 use jjtbsomhorst\garmin\sso\http\GarminConstants;
 use jjtbsomhorst\garmin\sso\http\Method;
 use jjtbsomhorst\garmin\sso\http\Uri;
-use GuzzleHttp\Psr7\Request;
 
 class SetCookieRequest extends Request
 {
@@ -14,7 +14,7 @@ class SetCookieRequest extends Request
         parent::__construct(
             Method::GET->value,
             new Uri(
-                GarminConstants::SSO_BASE_URL . "/embed",
+                GarminConstants::SSO_BASE_URL.'/embed',
                 GarminConstants::GET_COOKIE_PARAMS
             )
         );

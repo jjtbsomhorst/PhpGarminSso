@@ -2,10 +2,10 @@
 
 namespace jjtbsomhorst\garmin\sso\requests;
 
+use GuzzleHttp\Psr7\Request;
 use jjtbsomhorst\garmin\sso\http\GarminConstants;
 use jjtbsomhorst\garmin\sso\http\Method;
 use jjtbsomhorst\garmin\sso\http\Uri;
-use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\UriInterface;
 
 class CSRFTokenRequest extends Request
@@ -15,17 +15,17 @@ class CSRFTokenRequest extends Request
         parent::__construct(
             Method::GET->value,
             new Uri(
-                GarminConstants::SSO_BASE_URL . '/signin',
+                GarminConstants::SSO_BASE_URL.'/signin',
                 GarminConstants::CSRF_TOKEN_PARAMS,
             ),
             [
-                "Referer" => (new SetCookieRequest())->getUri()->__toString()
+                'Referer' => (new SetCookieRequest)->getUri()->__toString(),
             ]
         );
     }
 
     public static function url(): UriInterface
     {
-        return (new self())->getUri();
+        return (new self)->getUri();
     }
 }
