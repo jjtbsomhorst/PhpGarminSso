@@ -9,18 +9,28 @@ use jjtbsomhorst\garmin\sso\http\Uri;
 
 class RetrieveActivitiesRequest extends Request
 {
-    public function __construct($token, int $start = 0, int $limit = 20, string $sortby = 'startLocal', string $sortOrder = 'asc')
+    public function __construct($token, int $start = 0, int $limit = 20, ?\DateTimeImmutable $startDate = null, ?\DateTimeImmutable $endDate = null, string $sortby = 'startLocal', string $sortOrder = 'asc')
     {
+        $params = [
+            'limit' => $limit,
+            'start' => $start,
+            'sortBy' => $sortby,
+            'sortOrder' => $sortOrder,
+        ];
+
+        if ($startDate !== null) {
+            $params['startDate'] = $startDate->format('Y-m-d');
+        }
+
+        if ($endDate !== null) {
+            $params['endDate'] = $endDate->format('Y-m-d');
+        }
+
         parent::__construct(
             Method::GET->value,
             new Uri(
                 GarminConstants::CONNECT_BASE_URL.'/activitylist-service/activities/search/activities',
-                [
-                    'limit' => $limit,
-                    'start' => $start,
-                    'sortBy' => $sortby,
-                    'sortOrder' => $sortOrder,
-                ]
+                $params
             ),
             [
                 'NK' => 'NT',

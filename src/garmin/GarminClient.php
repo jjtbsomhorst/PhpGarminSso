@@ -156,11 +156,23 @@ class GarminClient
     /**
      * @return stdClass[]
      *
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     public function getActivities(int $start = 20, int $limit = 20, string $sortBy = 'startLocal', string $sortOrder = 'asc'): array
     {
-        $request = new RetrieveActivitiesRequest($this->accessToken->accessToken, $start, $limit, $sortBy, $sortOrder);
+        $request = new RetrieveActivitiesRequest(token: $this->accessToken->accessToken, start: $start, limit: $limit, sortby: $sortBy, sortOrder: $sortOrder);
+        $response = $this->send($request);
+
+        return json_decode($response->getBody()->getContents(), false);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws ClientExceptionInterface
+     */
+    public function getActivitiesBetweenDates(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate, int $start = 0, int $limit = 20, string $sortBy = 'startLocal', string $sortOrder = 'asc'): array
+    {
+        $request = new RetrieveActivitiesRequest(token: $this->accessToken->accessToken, start: $start, limit: $limit, startDate: $startDate, endDate: $endDate, sortby: $sortBy, sortOrder: $sortOrder);
         $response = $this->send($request);
 
         return json_decode($response->getBody()->getContents(), false);
