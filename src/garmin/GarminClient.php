@@ -36,7 +36,9 @@ class GarminClient
 
     private string $password;
 
-    private string $cookiedir = '';
+    private string $cookieDir = '';
+    private string $cookieFile = 'cookie_jar.txt';
+
 
     private http\AccessToken $accessToken;
 
@@ -56,9 +58,15 @@ class GarminClient
         return $this;
     }
 
+    public function cookieFile(string $filename): self
+    {
+        $this->cookieFile = $filename;
+        return $this;
+    }
+
     public function cookieJarLocation(string $path): self
     {
-        $this->cookiedir = $path;
+        $this->cookieDir = $path;
 
         return $this;
     }
@@ -95,7 +103,7 @@ class GarminClient
 
         $response = new ServiceTicketResponse(
             $this->send(
-                new ServiceTicketRequest('')
+                new ServiceTicketRequest($serviceTicket)
             )
         );
 
@@ -112,13 +120,13 @@ class GarminClient
 
     private function initClient(): void
     {
-        $cookieFile = 'cookie_jar.txt';
+        $cookiePath = $this->cookieFile;
 
-        if ($this->cookiedir !== '') {
-            $cookieFile = $this->cookiedir.'/'.$cookieFile;
+        if ($this->cookieDir !== '') {
+            $cookiePath = $this->cookieDir.'/'.$this->cookieFile;
         }
 
-        $cookieJar = new FileCookieJar($cookieFile, true);
+        $cookieJar = new FileCookieJar($cookiePath, true);
         if (! isset($this->client)) {
             $this->client = new Client(['cookies' => $cookieJar,  'verify' => false]);
         }
