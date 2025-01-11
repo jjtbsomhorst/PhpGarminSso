@@ -37,8 +37,8 @@ class GarminClient
     private string $password;
 
     private string $cookieDir = '';
-    private string $cookieFile = 'cookie_jar.txt';
 
+    private string $cookieFile = 'cookie_jar.txt';
 
     private http\AccessToken $accessToken;
 
@@ -61,6 +61,7 @@ class GarminClient
     public function cookieFile(string $filename): self
     {
         $this->cookieFile = $filename;
+
         return $this;
     }
 
